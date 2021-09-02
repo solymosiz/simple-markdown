@@ -892,6 +892,8 @@ var parseRef = function(capture, state, refNode /* : RefNode */) {
 };
 
 var currOrder = 0;
+var EMOJI_REGEX = /(?:\ud83d\udc68\ud83c\udffb\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffc-\udfff]|\ud83d\udc68\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb\udffd-\udfff]|\ud83d\udc68\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb\udffc\udffe\udfff]|\ud83d\udc68\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffd\udfff]|\ud83d\udc68\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffe]|\ud83d\udc69\ud83c\udffb\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffc-\udfff]|\ud83d\udc69\ud83c\udffb\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffc-\udfff]|\ud83d\udc69\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb\udffd-\udfff]|\ud83d\udc69\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffb\udffd-\udfff]|\ud83d\udc69\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb\udffc\udffe\udfff]|\ud83d\udc69\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffb\udffc\udffe\udfff]|\ud83d\udc69\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffd\udfff]|\ud83d\udc69\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffb-\udffd\udfff]|\ud83d\udc69\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83d\udc68\ud83c[\udffb-\udffe]|\ud83d\udc69\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83d\udc69\ud83c[\udffb-\udffe]|\ud83e\uddd1\ud83c\udffb\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udfff]|\ud83e\uddd1\ud83c\udffc\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udfff]|\ud83e\uddd1\ud83c\udffd\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udfff]|\ud83e\uddd1\ud83c\udffe\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udfff]|\ud83e\uddd1\ud83c\udfff\u200d\ud83e\udd1d\u200d\ud83e\uddd1\ud83c[\udffb-\udfff]|\ud83e\uddd1\u200d\ud83e\udd1d\u200d\ud83e\uddd1|\ud83d\udc6b\ud83c[\udffb-\udfff]|\ud83d\udc6c\ud83c[\udffb-\udfff]|\ud83d\udc6d\ud83c[\udffb-\udfff]|\ud83d[\udc6b-\udc6d])|(?:\ud83d[\udc68\udc69]|\ud83e\uddd1)(?:\ud83c[\udffb-\udfff])?\u200d(?:\u2695\ufe0f|\u2696\ufe0f|\u2708\ufe0f|\ud83c[\udf3e\udf73\udf7c\udf84\udf93\udfa4\udfa8\udfeb\udfed]|\ud83d[\udcbb\udcbc\udd27\udd2c\ude80\ude92]|\ud83e[\uddaf-\uddb3\uddbc\uddbd])|(?:\ud83c[\udfcb\udfcc]|\ud83d[\udd74\udd75]|\u26f9)((?:\ud83c[\udffb-\udfff]|\ufe0f)\u200d[\u2640\u2642]\ufe0f)|(?:\ud83c[\udfc3\udfc4\udfca]|\ud83d[\udc6e\udc70\udc71\udc73\udc77\udc81\udc82\udc86\udc87\ude45-\ude47\ude4b\ude4d\ude4e\udea3\udeb4-\udeb6]|\ud83e[\udd26\udd35\udd37-\udd39\udd3d\udd3e\uddb8\uddb9\uddcd-\uddcf\uddd6-\udddd])(?:\ud83c[\udffb-\udfff])?\u200d[\u2640\u2642]\ufe0f|(?:\ud83d\udc68\u200d\u2764\ufe0f\u200d\ud83d\udc8b\u200d\ud83d\udc68|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\u2764\ufe0f\u200d\ud83d\udc8b\u200d\ud83d[\udc68\udc69]|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\u2764\ufe0f\u200d\ud83d\udc68|\ud83d\udc68\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc68\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc68\u200d\ud83d[\udc66\udc67]|\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\u2764\ufe0f\u200d\ud83d[\udc68\udc69]|\ud83d\udc69\u200d\ud83d\udc66\u200d\ud83d\udc66|\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f|\ud83c\udff3\ufe0f\u200d\ud83c\udf08|\ud83c\udff4\u200d\u2620\ufe0f|\ud83d\udc15\u200d\ud83e\uddba|\ud83d\udc3b\u200d\u2744\ufe0f|\ud83d\udc41\u200d\ud83d\udde8|\ud83d\udc68\u200d\ud83d[\udc66\udc67]|\ud83d\udc69\u200d\ud83d[\udc66\udc67]|\ud83d\udc6f\u200d\u2640\ufe0f|\ud83d\udc6f\u200d\u2642\ufe0f|\ud83e\udd3c\u200d\u2640\ufe0f|\ud83e\udd3c\u200d\u2642\ufe0f|\ud83e\uddde\u200d\u2640\ufe0f|\ud83e\uddde\u200d\u2642\ufe0f|\ud83e\udddf\u200d\u2640\ufe0f|\ud83e\udddf\u200d\u2642\ufe0f|\ud83d\udc08\u200d\u2b1b)|[#*0-9]\ufe0f?\u20e3|(?:[©®\u2122\u265f]\ufe0f)|(?:\ud83c[\udc04\udd70\udd71\udd7e\udd7f\ude02\ude1a\ude2f\ude37\udf21\udf24-\udf2c\udf36\udf7d\udf96\udf97\udf99-\udf9b\udf9e\udf9f\udfcd\udfce\udfd4-\udfdf\udff3\udff5\udff7]|\ud83d[\udc3f\udc41\udcfd\udd49\udd4a\udd6f\udd70\udd73\udd76-\udd79\udd87\udd8a-\udd8d\udda5\udda8\uddb1\uddb2\uddbc\uddc2-\uddc4\uddd1-\uddd3\udddc-\uddde\udde1\udde3\udde8\uddef\uddf3\uddfa\udecb\udecd-\udecf\udee0-\udee5\udee9\udef0\udef3]|[\u203c\u2049\u2139\u2194-\u2199\u21a9\u21aa\u231a\u231b\u2328\u23cf\u23ed-\u23ef\u23f1\u23f2\u23f8-\u23fa\u24c2\u25aa\u25ab\u25b6\u25c0\u25fb-\u25fe\u2600-\u2604\u260e\u2611\u2614\u2615\u2618\u2620\u2622\u2623\u2626\u262a\u262e\u262f\u2638-\u263a\u2640\u2642\u2648-\u2653\u2660\u2663\u2665\u2666\u2668\u267b\u267f\u2692-\u2697\u2699\u269b\u269c\u26a0\u26a1\u26a7\u26aa\u26ab\u26b0\u26b1\u26bd\u26be\u26c4\u26c5\u26c8\u26cf\u26d1\u26d3\u26d4\u26e9\u26ea\u26f0-\u26f5\u26f8\u26fa\u26fd\u2702\u2708\u2709\u270f\u2712\u2714\u2716\u271d\u2721\u2733\u2734\u2744\u2747\u2757\u2763\u2764\u27a1\u2934\u2935\u2b05-\u2b07\u2b1b\u2b1c\u2b50\u2b55\u3030\u303d\u3297\u3299])(?:\ufe0f|(?!\ufe0e))|(?:(?:\ud83c[\udfcb\udfcc]|\ud83d[\udd74\udd75\udd90]|[\u261d\u26f7\u26f9\u270c\u270d])(?:\ufe0f|(?!\ufe0e))|(?:\ud83c[\udf85\udfc2-\udfc4\udfc7\udfca]|\ud83d[\udc42\udc43\udc46-\udc50\udc66-\udc69\udc6e\udc70-\udc78\udc7c\udc81-\udc83\udc85-\udc87\udcaa\udd7a\udd95\udd96\ude45-\ude47\ude4b-\ude4f\udea3\udeb4-\udeb6\udec0\udecc]|\ud83e[\udd0c\udd0f\udd18-\udd1c\udd1e\udd1f\udd26\udd30-\udd39\udd3d\udd3e\udd77\uddb5\uddb6\uddb8\uddb9\uddbb\uddcd-\uddcf\uddd1-\udddd]|[\u270a\u270b]))(?:\ud83c[\udffb-\udfff])?|(?:\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f|\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc73\udb40\udc63\udb40\udc74\udb40\udc7f|\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc77\udb40\udc6c\udb40\udc73\udb40\udc7f|\ud83c\udde6\ud83c[\udde8-\uddec\uddee\uddf1\uddf2\uddf4\uddf6-\uddfa\uddfc\uddfd\uddff]|\ud83c\udde7\ud83c[\udde6\udde7\udde9-\uddef\uddf1-\uddf4\uddf6-\uddf9\uddfb\uddfc\uddfe\uddff]|\ud83c\udde8\ud83c[\udde6\udde8\udde9\uddeb-\uddee\uddf0-\uddf5\uddf7\uddfa-\uddff]|\ud83c\udde9\ud83c[\uddea\uddec\uddef\uddf0\uddf2\uddf4\uddff]|\ud83c\uddea\ud83c[\udde6\udde8\uddea\uddec\udded\uddf7-\uddfa]|\ud83c\uddeb\ud83c[\uddee-\uddf0\uddf2\uddf4\uddf7]|\ud83c\uddec\ud83c[\udde6\udde7\udde9-\uddee\uddf1-\uddf3\uddf5-\uddfa\uddfc\uddfe]|\ud83c\udded\ud83c[\uddf0\uddf2\uddf3\uddf7\uddf9\uddfa]|\ud83c\uddee\ud83c[\udde8-\uddea\uddf1-\uddf4\uddf6-\uddf9]|\ud83c\uddef\ud83c[\uddea\uddf2\uddf4\uddf5]|\ud83c\uddf0\ud83c[\uddea\uddec-\uddee\uddf2\uddf3\uddf5\uddf7\uddfc\uddfe\uddff]|\ud83c\uddf1\ud83c[\udde6-\udde8\uddee\uddf0\uddf7-\uddfb\uddfe]|\ud83c\uddf2\ud83c[\udde6\udde8-\udded\uddf0-\uddff]|\ud83c\uddf3\ud83c[\udde6\udde8\uddea-\uddec\uddee\uddf1\uddf4\uddf5\uddf7\uddfa\uddff]|\ud83c\uddf4\ud83c\uddf2|\ud83c\uddf5\ud83c[\udde6\uddea-\udded\uddf0-\uddf3\uddf7-\uddf9\uddfc\uddfe]|\ud83c\uddf6\ud83c\udde6|\ud83c\uddf7\ud83c[\uddea\uddf4\uddf8\uddfa\uddfc]|\ud83c\uddf8\ud83c[\udde6-\uddea\uddec-\uddf4\uddf7-\uddf9\uddfb\uddfd-\uddff]|\ud83c\uddf9\ud83c[\udde6\udde8\udde9\uddeb-\udded\uddef-\uddf4\uddf7\uddf9\uddfb\uddfc\uddff]|\ud83c\uddfa\ud83c[\udde6\uddec\uddf2\uddf3\uddf8\uddfe\uddff]|\ud83c\uddfb\ud83c[\udde6\udde8\uddea\uddec\uddee\uddf3\uddfa]|\ud83c\uddfc\ud83c[\uddeb\uddf8]|\ud83c\uddfd\ud83c\uddf0|\ud83c\uddfe\ud83c[\uddea\uddf9]|\ud83c\uddff\ud83c[\udde6\uddf2\uddfc]|\ud83c[\udccf\udd8e\udd91-\udd9a\udde6-\uddff\ude01\ude32-\ude36\ude38-\ude3a\ude50\ude51\udf00-\udf20\udf2d-\udf35\udf37-\udf7c\udf7e-\udf84\udf86-\udf93\udfa0-\udfc1\udfc5\udfc6\udfc8\udfc9\udfcf-\udfd3\udfe0-\udff0\udff4\udff8-\udfff]|\ud83d[\udc00-\udc3e\udc40\udc44\udc45\udc51-\udc65\udc6a\udc6f\udc79-\udc7b\udc7d-\udc80\udc84\udc88-\udca9\udcab-\udcfc\udcff-\udd3d\udd4b-\udd4e\udd50-\udd67\udda4\uddfb-\ude44\ude48-\ude4a\ude80-\udea2\udea4-\udeb3\udeb7-\udebf\udec1-\udec5\uded0-\uded2\uded5-\uded7\udeeb\udeec\udef4-\udefc\udfe0-\udfeb]|\ud83e[\udd0d\udd0e\udd10-\udd17\udd1d\udd20-\udd25\udd27-\udd2f\udd3a\udd3c\udd3f-\udd45\udd47-\udd76\udd78\udd7a-\uddb4\uddb7\uddba\uddbc-\uddcb\uddd0\uddde-\uddff\ude70-\ude74\ude78-\ude7a\ude80-\ude86\ude90-\udea8\udeb0-\udeb6\udec0-\udec2\uded0-\uded6]|[\u23e9-\u23ec\u23f0\u23f3\u267e\u26ce\u2705\u2728\u274c\u274e\u2753-\u2755\u2795-\u2797\u27b0\u27bf\ue50a])|\ufe0f/;
+    
 /** @type {SimpleMarkdown.DefaultRules} */
 var defaultRules /* : DefaultRules */ = {
     Array: {
@@ -941,78 +943,19 @@ var defaultRules /* : DefaultRules */ = {
             return result;
         }
     },
-    heading: {
-        order: currOrder++,
-        match: blockRegex(/^ *(#{1,6})([^\n]+?)#* *(?:\n *)+\n/),
-        parse: function(capture, parse, state) {
-            return {
-                level: capture[1].length,
-                content: parseInline(parse, capture[2].trim(), state)
-            };
-        },
-        react: function(node, output, state) {
-            return reactElement(
-                'h' + node.level,
-                state.key,
-                {
-                    children: output(node.content, state)
-                }
-            );
-        },
-        html: function(node, output, state) {
-            return htmlTag("h" + node.level, output(node.content, state));
-        }
-    },
-    nptable: {
-        order: currOrder++,
-        match: blockRegex(TABLES.NPTABLE_REGEX),
-        parse: TABLES.parseNpTable,
-        react: null,
-        html: null
-    },
-    lheading: {
-        order: currOrder++,
-        match: blockRegex(/^([^\n]+)\n *(=|-){3,} *(?:\n *)+\n/),
-        parse: function(capture, parse, state) {
-            return {
-                type: "heading",
-                level: capture[2] === '=' ? 1 : 2,
-                content: parseInline(parse, capture[1], state)
-            };
-        },
-        react: null,
-        html: null
-    },
-    hr: {
-        order: currOrder++,
-        match: blockRegex(/^( *[-*_]){3,} *(?:\n *)+\n/),
-        parse: ignoreCapture,
-        react: function(node, output, state) {
-            return reactElement(
-                'hr',
-                state.key,
-                EMPTY_PROPS
-            );
-        },
-        html: function(node, output, state) {
-            return "<hr>";
-        }
-    },
     codeBlock: {
         order: currOrder++,
-        match: blockRegex(/^(?:    [^\n]+\n*)+(?:\n *)+\n/),
+        match: blockRegex(/^ *(`{3,}|~{3,}) *(?:(\S+) *)?\n([\s\S]+?)\n?\1 *(?:\n *)+\n/),
         parse: function(capture, parse, state) {
-            var content = capture[0]
-                .replace(/^    /gm, '')
-                .replace(/\n+$/, '');
             return {
-                lang: undefined,
-                content: content
+                type: "codeBlock",
+                lang: capture[2] || undefined,
+                content: capture[3]
             };
         },
         react: function(node, output, state) {
             var className = node.lang ?
-                "markdown-code-" + node.lang :
+                "language-" + node.lang :
                 undefined;
 
             return reactElement(
@@ -1032,7 +975,7 @@ var defaultRules /* : DefaultRules */ = {
         },
         html: function(node, output, state) {
             var className = node.lang ?
-                "markdown-code-" + node.lang :
+                "language-" + node.lang :
                 undefined;
 
             var codeBlock = htmlTag("code", sanitizeText(node.content), {
@@ -1040,19 +983,6 @@ var defaultRules /* : DefaultRules */ = {
             });
             return htmlTag("pre", codeBlock);
         }
-    },
-    fence: {
-        order: currOrder++,
-        match: blockRegex(/^ *(`{3,}|~{3,}) *(?:(\S+) *)?\n([\s\S]+?)\n?\1 *(?:\n *)+\n/),
-        parse: function(capture, parse, state) {
-            return {
-                type: "codeBlock",
-                lang: capture[2] || undefined,
-                content: capture[3]
-            };
-        },
-        react: null,
-        html: null
     },
     blockQuote: {
         order: currOrder++,
@@ -1076,6 +1006,7 @@ var defaultRules /* : DefaultRules */ = {
             return htmlTag("blockquote", output(node.content, state));
         }
     },
+    /*
     list: {
         order: currOrder++,
         match: function(source, state) {
@@ -1102,7 +1033,8 @@ var defaultRules /* : DefaultRules */ = {
             var bullet = capture[2];
             var ordered = bullet.length > 1;
             var start = ordered ? +bullet : undefined;
-            var items = /** @type {string[]} */ (
+            var items = // @type {string[]} 
+            (
                 capture[0]
                     .replace(LIST_BLOCK_END_R, "\n")
                     .match(LIST_ITEM_R)
@@ -1110,10 +1042,13 @@ var defaultRules /* : DefaultRules */ = {
 
             // We know this will match here, because of how the regexes are
             // defined
-            /*:: items = ((items : any) : Array<string>) */
+            //:: items = ((items : any) : Array<string>) 
 
             var lastItemWasAParagraph = false;
-            var itemContent = items.map(function(/** @type {string} */ item, /** @type {number} */ i) {
+            var itemContent = items.map(function(
+                 item, // @type {string}
+                 i // @type {number}
+            ) {
                 // We need to see how far indented this item is:
                 var prefixCapture = LIST_ITEM_PREFIX_R.exec(item);
                 var space = prefixCapture ? prefixCapture[0].length : 0;
@@ -1129,7 +1064,7 @@ var defaultRules /* : DefaultRules */ = {
                         .replace(LIST_ITEM_PREFIX_R, '');
 
                 // I'm not sur4 why this is necessary again?
-                /*:: items = ((items : any) : Array<string>) */
+                //:: items = ((items : any) : Array<string>) 
 
                 // Handling "loose" lists, like:
                 //
@@ -1192,8 +1127,8 @@ var defaultRules /* : DefaultRules */ = {
                 {
                     start: node.start,
                     children: node.items.map(function(
-                        /** @type {SimpleMarkdown.ASTNode} */ item,
-                        /** @type {number} */ i
+                        item, // @type {SimpleMarkdown.ASTNode}  
+                        i // @type {number} 
                     ) {
                         return reactElement(
                             'li',
@@ -1207,7 +1142,7 @@ var defaultRules /* : DefaultRules */ = {
             );
         },
         html: function(node, output, state) {
-            var listItems = node.items.map(function(/** @type {SimpleMarkdown.ASTNode} */ item) {
+            var listItems = node.items.map(function(item) { // item @type {SimpleMarkdown.ASTNode}
                 return htmlTag("li", output(item, state));
             }).join("");
 
@@ -1218,175 +1153,7 @@ var defaultRules /* : DefaultRules */ = {
             return htmlTag(listTag, listItems, attributes);
         }
     },
-    def: {
-        order: currOrder++,
-        // TODO(aria): This will match without a blank line before the next
-        // block element, which is inconsistent with most of the rest of
-        // simple-markdown.
-        match: blockRegex(
-            /^ *\[([^\]]+)\]: *<?([^\s>]*)>?(?: +["(]([^\n]+)[")])? *\n(?: *\n)*/
-        ),
-        parse: function(capture, parse, state) {
-            var def = capture[1]
-                .replace(/\s+/g, ' ')
-                .toLowerCase();
-            var target = capture[2];
-            var title = capture[3];
-
-            // Look for previous links/images using this def
-            // If any links/images using this def have already been declared,
-            // they will have added themselves to the state._refs[def] list
-            // (_ to deconflict with client-defined state). We look through
-            // that list of reflinks for this def, and modify those AST nodes
-            // with our newly found information now.
-            // Sorry :(.
-            if (state._refs && state._refs[def]) {
-                // `refNode` can be a link or an image
-                state._refs[def].forEach(function(/** @type {SimpleMarkdown.RefNode} */ refNode) {
-                    refNode.target = target;
-                    refNode.title = title;
-                });
-            }
-
-            // Add this def to our map of defs for any future links/images
-            // In case we haven't found any or all of the refs referring to
-            // this def yet, we add our def to the table of known defs, so
-            // that future reflinks can modify themselves appropriately with
-            // this information.
-            state._defs = state._defs || {};
-            state._defs[def] = {
-                target: target,
-                title: title,
-            };
-
-            // return the relevant parsed information
-            // for debugging only.
-            return {
-                def: def,
-                target: target,
-                title: title,
-            };
-        },
-        react: function() { return null; },
-        html: function() { return ""; }
-    },
-    table: {
-        order: currOrder++,
-        match: blockRegex(TABLES.TABLE_REGEX),
-        parse: TABLES.parseTable,
-        react: function(node, output, state) {
-            /**
-             * @param {number} colIndex
-             * @returns {{ [attr: string]: SimpleMarkdown.Attr }}
-             */
-            var getStyle = function(colIndex) {
-                return node.align[colIndex] == null ? {} : {
-                    textAlign: node.align[colIndex]
-                };
-            };
-
-            var headers = node.header.map(function(
-                /** @type {SimpleMarkdown.ASTNode} */ content,
-                /** @type {number} */ i
-            ) {
-                return reactElement(
-                    'th',
-                    '' + i,
-                    {
-                        style: getStyle(i),
-                        scope: 'col',
-                        children: output(content, state)
-                    }
-                );
-            });
-
-            var rows = node.cells.map(function(
-                    /** @type {SimpleMarkdown.ASTNode[]} */ row,
-                    /** @type {number} */ r
-            ) {
-                return reactElement(
-                    'tr',
-                    '' + r,
-                    {
-                        children: row.map(function(
-                            /** @type {SimpleMarkdown.ASTNode} */ content,
-                            /** @type {number} */ c
-                        ) {
-                            return reactElement(
-                                'td',
-                                '' + c,
-                                {
-                                    style: getStyle(c),
-                                    children: output(content, state)
-                                }
-                            );
-                        })
-                    }
-                );
-            });
-
-            return reactElement(
-                'table',
-                state.key,
-                {
-                    children: [reactElement(
-                        'thead',
-                        'thead',
-                        {
-                            children: reactElement(
-                                'tr',
-                                null,
-                                {
-                                    children: headers
-                                }
-                            )
-                        }
-                    ), reactElement(
-                        'tbody',
-                        'tbody',
-                        {
-                            children: rows
-                        }
-                    )]
-                }
-            );
-        },
-        html: function(node, output, state) {
-            /**
-             * @param {number} colIndex
-             * @returns {string}
-             */
-            var getStyle = function(colIndex) {
-                return node.align[colIndex] == null ? "" :
-                    "text-align:" + node.align[colIndex] + ";";
-            };
-
-            var headers = node.header.map(function(
-                /** @type {SimpleMarkdown.ASTNode} */ content,
-                /** @type {number} */ i
-            ) {
-                return htmlTag("th", output(content, state),
-                    { style: getStyle(i), scope: "col" });
-            }).join("");
-
-            var rows = node.cells.map(function(/** @type {SimpleMarkdown.ASTNode[]} */ row) {
-                var cols = row.map(function(
-                    /** @type {SimpleMarkdown.ASTNode} */ content,
-                    /** @type {number} */ c
-                ) {
-                    return htmlTag("td", output(content, state),
-                        { style: getStyle(c) });
-                }).join("");
-
-                return htmlTag("tr", cols);
-            }).join("");
-
-            var thead = htmlTag("thead", htmlTag("tr", headers));
-            var tbody = htmlTag("tbody", rows);
-
-            return htmlTag("table", thead + tbody);
-        }
-    },
+    */
     newline: {
         order: currOrder++,
         match: blockRegex(/^(?:\n *)*\n/),
@@ -1431,90 +1198,20 @@ var defaultRules /* : DefaultRules */ = {
         react: null,
         html: null
     },
-    tableSeparator: {
-        order: currOrder++,
-        match: function(source, state) {
-            if (!state.inTable) {
-                return null;
-            }
-            return /^ *\| */.exec(source);
-        },
-        parse: function() {
-            return { type: 'tableSeparator' };
-        },
-        // These shouldn't be reached, but in case they are, be reasonable:
-        react: function() { return ' | '; },
-        html: function() { return ' &vert; '; },
-    },
-    autolink: {
-        order: currOrder++,
-        match: inlineRegex(/^<([^: >]+:\/[^ >]+)>/),
-        parse: function(capture, parse, state) {
-            return {
-                type: "link",
-                content: [{
-                    type: "text",
-                    content: capture[1]
-                }],
-                target: capture[1]
-            };
-        },
-        react: null,
-        html: null
-    },
-    mailto: {
-        order: currOrder++,
-        match: inlineRegex(/^<([^ >]+@[^ >]+)>/),
-        parse: function(capture, parse, state) {
-            var address = capture[1];
-            var target = capture[1];
-
-            // Check for a `mailto:` already existing in the link:
-            if (!AUTOLINK_MAILTO_CHECK_R.test(target)) {
-                target = "mailto:" + target;
-            }
-
-            return {
-                type: "link",
-                content: [{
-                    type: "text",
-                    content: address
-                }],
-                target: target
-            };
-        },
-        react: null,
-        html: null
-    },
-    url: {
-        order: currOrder++,
-        match: inlineRegex(/^(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/),
-        parse: function(capture, parse, state) {
-            return {
-                type: "link",
-                content: [{
-                    type: "text",
-                    content: capture[1]
-                }],
-                target: capture[1],
-                title: undefined
-            };
-        },
-        react: null,
-        html: null
-    },
     link: {
         order: currOrder++,
-        match: inlineRegex(new RegExp(
-            "^\\[(" + LINK_INSIDE + ")\\]\\(" + LINK_HREF_AND_TITLE + "\\)"
-        )),
+        match: inlineRegex(/^(http[s]?:\/\/(www\.)?|ftp:\/\/(www\.)?|www\.){1}([0-9A-Za-z-\.@:%_\+~#=]+)+((\.[a-zA-Z]{2,3})+)(\/(.)*)?(\?(.)*)?/),
         parse: function(capture, parse, state) {
-            var link ={
-                content: parse(capture[1], state),
-                target: unescapeUrl(capture[2]),
-                title: capture[3]
+            //console.log('capture,', capture)
+            return {
+                type: "link",
+                content: [{
+                    type: "text",
+                    content: capture[0]
+                }],
+                target: unescapeUrl(capture[0]),
+                title: capture[0]
             };
-            return link;
         },
         react: function(node, output, state) {
             return reactElement(
@@ -1536,76 +1233,8 @@ var defaultRules /* : DefaultRules */ = {
             return htmlTag("a", output(node.content, state), attributes);
         }
     },
-    image: {
-        order: currOrder++,
-        match: inlineRegex(new RegExp(
-            "^!\\[(" + LINK_INSIDE + ")\\]\\(" + LINK_HREF_AND_TITLE + "\\)"
-        )),
-        parse: function(capture, parse, state) {
-            var image = {
-                alt: capture[1],
-                target: unescapeUrl(capture[2]),
-                title: capture[3]
-            };
-            return image;
-        },
-        react: function(node, output, state) {
-            return reactElement(
-                'img',
-                state.key,
-                {
-                    src: sanitizeUrl(node.target),
-                    alt: node.alt,
-                    title: node.title
-                }
-            );
-        },
-        html: function(node, output, state) {
-            var attributes = {
-                src: sanitizeUrl(node.target),
-                alt: node.alt,
-                title: node.title
-            };
-
-            return htmlTag("img", "", attributes, false);
-        }
-    },
-    reflink: {
-        order: currOrder++,
-        match: inlineRegex(new RegExp(
-            // The first [part] of the link
-            "^\\[(" + LINK_INSIDE + ")\\]" +
-            // The [ref] target of the link
-            "\\s*\\[([^\\]]*)\\]"
-        )),
-        parse: function(capture, parse, state) {
-            return parseRef(capture, state, {
-                type: "link",
-                content: parse(capture[1], state)
-            });
-        },
-        react: null,
-        html: null
-    },
-    refimage: {
-        order: currOrder++,
-        match: inlineRegex(new RegExp(
-            // The first [part] of the link
-            "^!\\[(" + LINK_INSIDE + ")\\]" +
-            // The [ref] target of the link
-            "\\s*\\[([^\\]]*)\\]"
-        )),
-        parse: function(capture, parse, state) {
-            return parseRef(capture, state, {
-                type: "image",
-                alt: capture[1]
-            });
-        },
-        react: null,
-        html: null
-    },
-    em: {
-        order: currOrder /* same as strong/u */,
+    /*em: {
+        order: currOrder, // same as strong/u 
         match: inlineRegex(
             new RegExp(
                 // only match _s surrounding words.
@@ -1655,7 +1284,7 @@ var defaultRules /* : DefaultRules */ = {
         html: function(node, output, state) {
             return htmlTag("em", output(node.content, state));
         }
-    },
+    },*/
     strong: {
         order: currOrder /* same as em */,
         match: inlineRegex(/^\*\*((?:\\[\s\S]|[^\\])+?)\*\*(?!\*)/),
@@ -1700,7 +1329,7 @@ var defaultRules /* : DefaultRules */ = {
     },
     del: {
         order: currOrder++,
-        match: inlineRegex(/^~~(?=\S)((?:\\[\s\S]|~(?!~)|[^\s~\\]|\s(?!~~))+?)~~/),
+        match: inlineRegex(/^~~(?=\S)((?:\\[\s\S]|~(?!~)|[^\s~]|\s(?!~~))+?)~~/),
         parse: parseCaptureInline,
         react: function(node, output, state) {
             return reactElement(
@@ -1751,6 +1380,28 @@ var defaultRules /* : DefaultRules */ = {
             return "<br>";
         }
     },
+    emoji: {
+        order: currOrder++,
+        match: function(source, state) {
+            var m = EMOJI_REGEX.exec(source);
+            if (m === null || m.index != 0) return null;
+            else{
+                return m;
+            }
+        },
+        parse: function(capture, parse, state) {
+            return {
+                content: capture,
+                type: "emoji",
+            };
+        },
+        react: function(node, output, state) {
+            return twemoji.parse(node.content[0]);
+        },
+        html: function(node, output, state) {
+            return twemoji.parse(node.content[0]);
+        }
+    },
     text: {
         order: currOrder++,
         // Here we look for anything followed by non-symbols,
@@ -1758,7 +1409,7 @@ var defaultRules /* : DefaultRules */ = {
         // We break on any symbol characters so that this grammar
         // is easy to extend without needing to modify this regex
         match: anyScopeRegex(
-            /^[\s\S]+?(?=[^0-9A-Za-z\s\u00c0-\uffff]|\n\n| {2,}\n|\w+:\S|$)/
+            /^[\s\S]+?(?=[^0-9A-Za-z\s]|\n\n| {2,}\n|\w+:\S|$)/
         ),
         parse: function(capture, parse, state) {
             return {
