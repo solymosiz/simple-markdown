@@ -41,7 +41,9 @@
     "README.md"
   ],
   "dependencies": {
-    "@types/react": ">=16.0.0"
+    "@types/react": ">=16.0.0",
+    "classlist.js": "^1.1.20150312",
+    "highlight.js": "^11.2.0"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.7",
