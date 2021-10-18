@@ -1158,12 +1158,13 @@ var defaultRules /* : DefaultRules */ = {
         order: currOrder++,
         match: blockRegex(/^(?:\n *)*\n/),
         parse: ignoreCapture,
-        react: function(node, output, state) { return "\n"; },
-        html: function(node, output, state) { return "\n"; }
+        react: function(node, output, state) { return "<br>"; },
+        html: function(node, output, state) { return "<br>"; }
     },
     paragraph: {
         order: currOrder++,
-        match: blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)+\n/),
+        //match: blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)+\n/),
+        match: blockRegex(/^([^\n]+)\n/),
         parse: parseCaptureInline,
         react: function(node, output, state) {
             return reactElement(
