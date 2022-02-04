@@ -1307,6 +1307,27 @@ var defaultRules /* : DefaultRules */ = {
             return htmlTag("strong", output(node.content, state));
         }
     },
+    italic: {
+        order: currOrder /* same as em */,
+        match: inlineRegex(/^\*((?:\\[\s\S]|[^\\^*])+?)\*(?!\*)/),
+        quality: function(capture) {
+            // precedence by length, wins ties vs `u`:
+            return capture[0].length + 0.1;
+        },
+        parse: parseCaptureInline,
+        react: function(node, output, state) {
+            return reactElement(
+                'i',
+                state.key,
+                {
+                    children: output(node.content, state)
+                }
+            );
+        },
+        html: function(node, output, state) {
+            return htmlTag("i", output(node.content, state));
+        }
+    },
     u: {
         order: currOrder++ /* same as em&strong; increment for next rule */,
         match: inlineRegex(/^__((?:\\[\s\S]|[^\\])+?)__(?!_)/),
