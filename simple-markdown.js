@@ -1419,12 +1419,12 @@ var defaultRules /* : DefaultRules */ = {
         },
         react: function(node, output, state) {
             return twemoji.parse(node.content[0], {
-                base: "assets/img/twemoji/13.0.1/"
+                base: "assets/img/twemoji/"
             });
         },
         html: function(node, output, state) {
             return twemoji.parse(node.content[0], {
-                base: "assets/img/twemoji/13.0.1/"
+                base: "assets/img/twemoji/"
             });
         }
     },
